@@ -6,23 +6,23 @@ services:
     ports:
       - 5433:5432
     env_file:
-      - ./hotel-backend/.env #configurar POSTGRES_USER, POSTGRES_PASSWORD e POSTGRES_DB
+      - ./hotel-back-end/.env #configurar POSTGRES_USER, POSTGRES_PASSWORD e POSTGRES_DB
     volumes:
     - pg:/var/lib/postgresql/data # onde os dados do postgres ficam armazenados no sistema operacional
 
   api:
     container_name: api
-    build: ./hotel-backend #Dockerfile do node se encontra na pasta atual
+    build: ./hotel-back-end #Dockerfile do node se encontra na pasta atual
     ports:
       - 4000:4000
     depends_on:
       - db # só sobe quando o postgres tiver no ar
     env_file:
-      - ./hotel-backend/.env #configurar DATABASE_URL
+      - ./hotel-back-end/.env #configurar DATABASE_URL
 
   spa:
     container_name: spa # nome do container do react
-    build: ./hotel-frontend # builda e move os arquivos para o volume react
+    build: ./hotel-front-end # builda e move os arquivos para o volume react
     volumes: 
      - react-volume:/var/www/html
   

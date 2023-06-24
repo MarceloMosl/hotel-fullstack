@@ -1,0 +1,69 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id        Int       @id @default(autoincrement())
+    email     String    @unique @db.VarChar(255)
+    password  String    @db.VarChar(255)
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    Booking   Booking[]
+    Session   Session[]
+}
+
+model Session {
+    id        Int      @id @default(autoincrement())
+    userId    Int
+    token     String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Payment {
+    id             Int      @id @default(autoincrement())
+    ticketId       Int
+    value          Int
+    cardIssuer     String
+    cardLastDigits String
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @updatedAt
+}
+
+model Hotel {
+    id        Int      @id @default(autoincrement())
+    name      String
+    image     String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    Rooms     Room[]
+}
+
+model Room {
+    id        Int       @id @default(autoincrement())
+    name      String
+    capacity  Int
+    hotelId   Int
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    Hotel     Hotel     @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+    Booking   Booking[]
+}
+
+model Booking {
+    id        Int      @id @default(autoincrement())
+    userId    Int
+    roomId    Int
+    startAt   DateTime
+    endsAt    DateTime
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    Room      Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+    User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
