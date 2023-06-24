@@ -30,7 +30,7 @@ services:
     container_name: nginx # nome do container
     build: ./nginx # busca os arquivos no diretorio apontado no Dockerfile e cria um servidor web
     ports:
-      - 8080:80 # 8080 externo 80 interno
+      - 80:80 # 8080 externo 80 interno
     volumes: 
      - react-volume:/var/www/html
     depends_on:
