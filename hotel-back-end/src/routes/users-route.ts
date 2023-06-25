@@ -1,5 +1,4 @@
 import { Router } from "express";
-
 import { usersPost } from "@/controllers";
 import { signIn } from "@/controllers";
 import { validateBody } from "@/middlewares/validation-middleware";
