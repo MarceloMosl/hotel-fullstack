@@ -12,5 +12,6 @@ describe("Should return OK and status 200", () => {
     const resultado = await api.get("/tst");
 
     console.log(resultado.body);
+    expect(resultado.status).toBe(200);
   });
 });
