@@ -22,8 +22,8 @@ export async function signIn(req: Request, res: Response) {
   const { email, password } = req.body;
   try {
     const token = await userService.signIn(email, password);
-    return res.status(OK).send({ token });
+    return res.status(200).send({ token });
   } catch (error) {
-    return res.send(error);
+    return res.status(400).send(error);
   }
 }

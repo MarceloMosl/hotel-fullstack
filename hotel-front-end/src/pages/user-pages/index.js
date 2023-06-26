@@ -1,27 +1,84 @@
 import React from "react";
 import styled from "styled-components";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function UserPage() {
   const [user, setUser] = React.useState(true);
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+
+  async function submitForm(event) {
+    event.preventDefault();
+
+    if (user === true) {
+      try {
+        const promise = await axios.post(
+          `${process.env.REACT_APP_DATABASE}/sign-in`,
+          {
+            email,
+            password,
+          }
+        );
+
+        console.log(promise);
+        toast("Bem-vindo de volta!");
+      } catch (error) {
+        toast("Não foi possivel completar a ação");
+      }
+    } else {
+      try {
+        const promise = await axios.post(`${process.env.REACT_APP_DATABASE}/`, {
+          email,
+          password,
+        });
+        console.log(promise);
+        toast("usuario cadastrado com sucesso");
+        setUser(true);
+      } catch (error) {
+        toast("Não foi possivel realizar o cadastro");
+      }
+    }
+  }
 
   return (
     <Container>
       {user ? (
-        <form>
+        <form onSubmit={submitForm}>
           <h1>Reserving</h1>
-          <Inputs placeholder="email" type="text" required></Inputs>
-          <Inputs placeholder="password" type="password" required></Inputs>
+          <Inputs
+            placeholder="email"
+            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            required
+          ></Inputs>
+          <Inputs
+            placeholder="password"
+            onChange={(e) => setPassword(e.target.value)}
+            type="password"
+            required
+          ></Inputs>
           <button type="submit">Login</button>
           <p onClick={() => setUser(false)}>
             Não tem cadastro ainda? <span>Clique aqui</span>
           </p>
         </form>
       ) : (
-        <form>
+        <form onSubmit={submitForm}>
           <h1>Reserving</h1>
-          <Inputs placeholder="name" type="password" required></Inputs>
-          <Inputs placeholder="email" type="text" required></Inputs>
-          <Inputs placeholder="password" type="password" required></Inputs>
+          <Inputs
+            placeholder="email"
+            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            required
+          ></Inputs>
+          <Inputs
+            placeholder="password"
+            onChange={(e) => setPassword(e.target.value)}
+            type="password"
+            required
+          ></Inputs>
+
           <button type="submit">Cadastre-se!</button>
           <p onClick={() => setUser(true)}>
             ja possui uma conta?<span> Clique aqui</span>
